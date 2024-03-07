@@ -28,7 +28,6 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
-import taboolib.common.platform.function.info
 import taboolib.common.platform.function.submit
 import taboolib.common5.Baffle
 import taboolib.common5.cbool
@@ -56,6 +55,12 @@ abstract class DefaultEntityInstance(entityType: EntityTypes = EntityTypes.ZOMBI
 
     override val z: Double
         get() = clientPosition.z
+
+    override val chunkX: Int
+        get() = (x / 16).toInt()
+
+    override val chunkZ: Int
+        get() = (z / 16).toInt()
 
     override val yaw: Float
         get() = clientPosition.yaw
@@ -363,7 +368,9 @@ abstract class DefaultEntityInstance(entityType: EntityTypes = EntityTypes.ZOMBI
         }
         // 处理事件
         val eventBus = DefaultAdyeshachAPI.localEventBus
-        if (!eventBus.callTeleport(this, location)) {
+        if (eventBus.callTeleport(this, location)) {
+            eventBus.postTeleport(this, location)
+        } else {
             return
         }
         val newPosition = EntityPosition.fromLocation(location)
