@@ -80,7 +80,7 @@ fun DefaultEntityInstance.updateMoveFrames() {
  * 尝试性修复 - 2024/02/27: 基于原版 PlayerChunkMap 的区块可见性决定实体可见性
  */
 fun DefaultEntityInstance.handleTracker() {
-    // 每 2 秒检查一次
+    // 检查间隔
     if (viewPlayers.visibleRefreshLocker.hasNext()) {
         // 获取不可视的玩家
         viewPlayers.getOutsidePlayers().forEach { player ->
